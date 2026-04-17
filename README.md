@@ -53,7 +53,7 @@ Las migraciones se manejan con TypeORM CLI y corren directamente sobre el códig
 Detecta los cambios en las entidades y genera un archivo de migración nuevo en `src/migrations/`:
 
 ```bash
-npm run migrations:generate -- src/migrations/NombreDeLaMigracion
+npm run migrations:generate NombreDeLaMigracion
 ```
 
 TypeORM agrega automáticamente un timestamp como prefijo al nombre del archivo:
