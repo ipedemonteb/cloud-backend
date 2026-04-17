@@ -44,6 +44,60 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Database migrations
+
+Las migraciones se manejan con TypeORM CLI y corren directamente sobre el código fuente TypeScript (sin necesidad de compilar antes).
+
+### Generar una migración
+
+Detecta los cambios en las entidades y genera un archivo de migración nuevo en `src/migrations/`:
+
+```bash
+npm run migrations:generate -- src/migrations/NombreDeLaMigracion
+```
+
+TypeORM agrega automáticamente un timestamp como prefijo al nombre del archivo:
+
+```
+src/migrations/1713350400000-NombreDeLaMigracion.ts
+```
+
+### Ejecutar migraciones pendientes
+
+```bash
+npm run migrations:run
+```
+
+### Revertir la última migración
+
+```bash
+npm run migrations:revert
+```
+
+### Convención para entidades
+
+Cada módulo debe definir sus entidades dentro de un directorio `entities/` propio:
+
+```
+src/
+├── users/
+│   ├── entities/
+│   │   └── user.entity.ts
+│   └── users.module.ts
+├── orders/
+│   ├── entities/
+│   │   └── order.entity.ts
+│   └── orders.module.ts
+```
+
+TypeORM las detecta automáticamente gracias al glob `src/**/*.entity.ts` configurado en `data-source.ts`. Al generar una migración, el CLI escanea todos los archivos que sigan ese patrón.
+
+### Notas
+
+- `synchronize` está en `false`. Nunca se modificará el esquema automáticamente — todos los cambios deben hacerse a través de migraciones.
+- Las migraciones se guardan en `src/migrations/` y deben commitearse al repositorio.
+- Para que el CLI funcione correctamente, el archivo `.env` debe estar presente con las credenciales de la base de datos.
+
 ## Run tests
 
 ```bash
